@@ -4,7 +4,7 @@
 
 Domain Name System collect domain names with their ip addresses.
 
-When you trying to reach website using domain name your computer asks DNS what ip address this domain has, and after reach website using ip address of the domain.
+When you are trying to reach a website using a domain name, your computer asks DNS what ip address this domain has, and after reach the website using ip address of the domain.
 
 ![[DNS.png|400]]
 
@@ -28,7 +28,7 @@ DNS record is a type of data that server use to store information about domain n
 |-----|--------|-----|
 | subdomain | domain | TLD - top-level domain |
 
-Subdomains is used to create children domains and control them separately. 
+Subdomains are used to create children domains and control them separately. 
 Subdomains examples: 
 - help.google.com 
 - support.google.com
@@ -37,8 +37,8 @@ Subdomains examples:
 ---
 ## DNS Zone file
 
-Is a text file that maps domain names and IP addresses.
-It is human readable and can be manually edited.
+It is a text file that maps domain names and ip addresses.
+It is human-readable and can be manually edited.
 DNS Zones can be forward or reverse.
 
 - ### Forward DNS Lookup Zone
@@ -75,7 +75,7 @@ DNS Zones can be forward or reverse.
 	@       IN      AAAA    ::1
 	```
 	 - SOA - Start of Authority is a metadata, there can be stored primary name server and email of admin. It also defines records related to its serial number and how long to cache the records.
-	 - NS - records that define the name serveres hosting this domain.
+	 - NS - records that define the name servers hosting this domain.
 	 - 
 
 - ### Reverse DNS Lookup Zone
@@ -99,12 +99,12 @@ DNS Zones can be forward or reverse.
 - Windows 10
 - Oracle VM VirtualBox 7.0.4
 - NAT network
-	- dns ip  - 10.0.2.6
-	- host ip - 10.0.2.5
+	- DNS ip    - 10.0.2.6
+	- host ip   - 10.0.2.5
 	- nginx ip - 10.0.2.15
 - Ubuntu 22.04 Server as guest OS
 
-## Set up web server(nginx), dns server(bind9), host
+## Set up web server(nginx), DNS server(bind9), host
 
 ### Set up web server using nginx
 
@@ -115,7 +115,7 @@ bohdan@test-ngx:~$ sudo apt install nginx
 ```
 
 - (Ngx VM) Test nginx
-	- after installation nginx will show welcome page on localhost:80
+	- after installation, nginx will show welcome page on localhost:80
 ```
 <!DOCTYPE html>
 <html>
@@ -192,8 +192,8 @@ bohdan@test-dns:~$ sudo ufw allow Bind9                                         
 ```
 
 - (DNS VM) Edit Bind9 configuration file
-	- block listen-on specify requests from what ip addresses bind9 will listen.
-	- block forwarders contain ip addresses of DNS servers to which request will be redirected if bind9 doesn't know required domain name.
+	- block "listen-on" specify requests from what ip addresses bind9 will listen.
+	- block "forwarders" contain ip addresses of DNS servers to which the request will be redirected if bind9 doesn't know a required domain name.
 ```sh
 # /etc/bind/named.conf.options
 
@@ -230,8 +230,8 @@ bohdan@test-dns:~$ sudo systemctl status bind9
 ...
 ```
 
-#### Set up dns zones and records
-- (DNS VM) Configure bind9 work only with ipv4 networks.
+#### Set up DNS zones and records
+- (DNS VM) Configure bind9 to work only with ipv4 networks.
 	- You can do it right after installation of bind9
 ```
 #/etc/default/named
@@ -262,7 +262,7 @@ zone "2.0.10.in-addr.arpa" {
 ```
 
 - (DNS VM) Check configuration file syntax
-	- if all is correct there won't be any input
+	- if all is correct, there won't be any input
 ```
 bohdan@test-dns:~$ named-checkconf
 ```
@@ -384,7 +384,7 @@ Bind9                      ALLOW       Anywhere
 Bind9 (v6)                 ALLOW       Anywhere (v6)
 ```
 
-- (DNS VM) Request ip address of testdomain.com from DNS
+- (DNS VM) Request ip address of testdomain.com from my DNS
 	- 4th Block "ANSWER SECTION" show ip address of testdomain.com
 ```
 bohdan@test-dns:~$ dig @10.0.2.6 testdomain.com
@@ -411,7 +411,7 @@ testdomain.com.         604800  IN      A       10.0.2.15
 ;; MSG SIZE  rcvd: 87
 ```
 
-- (DNS VM) Request ip address of subdomain www.testdomain.com from DNS
+- (DNS VM) Request ip address of subdomain www.testdomain.com from my DNS
 ```
 bohdan@test-dns:~$ dig @10.0.2.6 www.testdomain.com
 
@@ -438,7 +438,7 @@ www.testdomain.com.     604800  IN      A       10.0.2.15
 ```
 
 ### Test DNS using Host VM
-- (Host VM) Make request to dns 
+- (Host VM) Make request to DNS 
 ```
 bohdan@test-host:~$ nslookup google.com 10.0.2.6
 Server:         10.0.2.6 
@@ -452,7 +452,7 @@ Address: 2a00:1450:401b:805::200e
 ```
 
 - (Host VM) Change /etc/resolv.conf
-	- changes in this file will be overwrited after every reboot
+	- changes in this file will be overwrote after every reboot
 ```
 #/etc/resolv.conf
 ...
@@ -499,6 +499,7 @@ Address:        10.0.2.6#53
 
 Name:   testdomain.com
 Address: 10.0.2.15
+...
 ```
 
 - (Host VM) Check subdomain www.testdomain.com using nslookup
@@ -509,9 +510,10 @@ Address:        10.0.2.6#53
 
 Name:   www.testdomain.com
 Address: 10.0.2.15
+...
 ```
 
-- (Host VM) Get answer from our web server using domain name
+- (Host VM) Get answer from my web server using domain name
 ```
 bohdan@test-host:~$ curl testdomain.com
 <!doctype html>
