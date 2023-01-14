@@ -42,7 +42,6 @@ It is human-readable and can be manually edited.
 DNS Zones can be forward or reverse.
 
 - ### Forward DNS Lookup Zone
-	 It is used anytime when you have a name that you want to use instead of an IP address. 
 	 This zone contains all the records of domain names to their IP addresses.
 
 	- Define forward zone in bind9 configuration:
@@ -55,38 +54,76 @@ DNS Zones can be forward or reverse.
 	```
 	 ^4f9b7a
 
-	 - Default forward zone db configuration file
+	 - **Forward DNS Lookup zone configuration 
 	 ```
-	#/etc/bind/zones/forward.testdomain.com
-	
 	;
 	; BIND data file for local loopback interface
 	;
 	$TTL    604800
-	@       IN      SOA     localhost. root.localhost. (
+	@       IN      SOA     testdomain.com. root.testdomain.com. (
                               2         ; Serial
                          604800         ; Refresh
                           86400         ; Retry
                         2419200         ; Expire
                          604800 )       ; Negative Cache TTL
-	;
-	@       IN      NS      localhost.
-	@       IN      A       127.0.0.1
-	@       IN      AAAA    ::1
+
+	; Define the default name server to ns1.testdomain.com
+	# dns server who is responsible for this zone
+	@       IN      NS      ns1.testdomain.com.
+
+	; Resolve ns1 to server IP address
+	; A record for the main DNS
+	ns1     IN      A       10.0.2.6
+
+	; Other domains for testdomain.com
+	; Create subdomain www
+	www     IN      A       10.0.2.15
+
+	# @ means no subdomain, just testdomain.com
+	@       IN      A       10.0.2.15
 	```
+	 - $TTL - Time To Live parameter specify how long any of the records will be stored in cache.
 	 - SOA - Start of Authority is a metadata, there can be stored primary name server and email of admin. It also defines records related to its serial number and how long to cache the records.
-	 - NS - records that define the name servers hosting this domain.
-	 - 
+	 - ; Refresh - how often secondary DNS server will update information from there.
+	 - ; Retry - how long to wait before update if previous was unsuccesfull
+	 - ; Expire - time after what zone will expire
+	 - ; Negative cache TTL - what minimal time record must be stored before remove
+
 
 - ### Reverse DNS Lookup Zone
-	 It is used to ...
+	 This zone contains all the records of IP addresses  to their domains.
 
-	- Define reverse zone in bind9 configuration: ^d498f5
+	- Define reverse zone in bind9 config: ^d498f5
 	 ```
-	 
+	#define reverse zone for 10.0.2.0/24
+	zone "2.0.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/zones/reverse.testdomain.com";
+		};
 	```
 
+	 - **Reverse DNS lookup zone configuration ^8dd642
+	 ```
+	#/etc/bind/zones/reverse.testdomain.com
+	;
+	; BIND reverse data file for local loopback interface
+	;
+	$TTL    604800
+	@       IN      SOA     testdomain.com. root.testdomain. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
 
+	; Name server Info for ns1.testdomain.com
+	@       IN      NS      ns1.testdomain.com.
+	6       IN      PTR     ns1.testdomain.com.
+	15      IN      PTR     testdomain.com.
+	15      IN      PTR     www.testdomain.com.
+	```
+	 - All is same as forward zone but in first column we specify last digit of ip address.
+	 - And instead of A record use PTR record (pointer)
 
 
 
@@ -193,12 +230,13 @@ bohdan@test-dns:~$ sudo ufw allow Bind9                                         
 
 - (DNS VM) Edit Bind9 configuration file
 	- block "listen-on" specify requests from what ip addresses bind9 will listen.
+		- in my case DNS listens devices from local network.
 	- block "forwarders" contain ip addresses of DNS servers to which the request will be redirected if bind9 doesn't know a required domain name.
 ```sh
 # /etc/bind/named.conf.options
 
 options {
-    
+    ...
     listen-on {
         10.0.2.0/24;
     };
@@ -291,7 +329,7 @@ bohdan@test-dns:~$ ls /etc/bind/zones/
 forward.testdomain.com  reverse.testdomain.com
 ```
 
-- (DNS VM) Set up forward zone configuration file
+- (DNS VM) Set up [[DNS#^4f9b7a|Forward DNS Lookup Zone]]
 ```
 # /etc/bind/zones/forward.testdomain.com
 ;
@@ -318,14 +356,14 @@ www     IN      A       10.0.2.15
 @       IN      A       10.0.2.15
 ```
 
-- (DNS VM) Set up reverse zone configuration file
+- (DNS VM) Set up [[DNS#^8dd642|Reverse DNS Lookup Zone]]
 ```
 /etc/bind/zones/reverse.testdomain.com
 ;
 ; BIND reverse data file for local loopback interface
 ;
 $TTL    604800
-@       IN      SOA     testdomain. root.testdomain. (
+@       IN      SOA     testdomain.com. root.testdomain. (
                               1         ; Serial
                          604800         ; Refresh
                           86400         ; Retry
@@ -334,7 +372,10 @@ $TTL    604800
 
 ; Name server Info for ns1.testdomain.com
 @       IN      NS      ns1.testdomain.com.
-ns1     IN      A       10.0.2.6
+6       IN      PTR     ns1.testdomain.com.
+15      IN      PTR     testdomain.com.
+15      IN      PTR     www.testdomain.com.
+
 ```
 
 - (DNS VM) Check main configuration file syntax
