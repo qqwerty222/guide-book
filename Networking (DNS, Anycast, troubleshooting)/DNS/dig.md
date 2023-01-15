@@ -3,17 +3,16 @@
 
 **dig is a flexible tool that helps in process of DNS servers troubleshooting.
 
-It performs DNS lookups and displays the answers that are returned from the name server(s)
-that  were  queried.
+It performs DNS lookups and displays the answers that are returned from the name server(s) that were queried.
 
-Unless  it  is told to query a specific name server, dig tries each of the servers listed in /etc/resolv.conf. If  no  usable  server  addresses  are found, dig sends the query to the local host. When  no  command-line  arguments or options are given, dig performs an NS query for "." (the root).
+Unless it is told to query a specific name server, dig tries each of the servers listed in /etc/resolv.conf. If no usable server addresses are found, dig sends the query to the local host. When no command-line arguments or options are given, dig performs an NS query for "." (the root).
 ***
 
 ## Installation
 
-It is a part of dnsutils package and you can install it using package manager.
+It is a part of dnsutils package, and you can install it using package manager.
 
-Install on Ubuntu at example:
+Install on Ubuntu for example:
 ```
 sudo apt-get install dnsutils
 ```
@@ -25,10 +24,10 @@ sudo apt-get install dnsutils
 dig [server] [name] [type]
 ```
 
-- server  is the name or IP address of the name server to query.
-	- When the supplied server  argument  is  a hostname, dig resolves that name before querying that name server.
+- server   is the name or IP address of the name server to query.
+	- When the supplied server argument is a hostname, dig resolves that name before querying that name server.
 - name   is the name of the resource record that is to be looked up.
--  type    indicates what type of query is required - ANY, A,  MX,  SIG,  etc.
+-  type    indicates what type of query is required - ANY, A, MX, SIG, etc.
 	- If no type argument is supplied, dig performs a lookup for an A record.
 ***
 
@@ -127,7 +126,7 @@ google.com.             300     IN      A       142.250.203.206
 bohdan@test-host:~$
 ```
 
-- ### Get all of the DNS records types
+- ### Get all the DNS records types
 ^bd7d74
 ```
 bohdan@test-host:~$ dig google.com ANY +noall +answer

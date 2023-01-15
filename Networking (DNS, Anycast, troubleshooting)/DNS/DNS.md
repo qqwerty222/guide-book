@@ -39,7 +39,7 @@ Subdomains examples:
 
 It is a text file that maps domain names and ip addresses.
 It is human-readable and can be manually edited.
-DNS Zones can be forward or reverse.
+DNS zones can be forward or reverse.
 
 - ### Forward DNS Lookup Zone
 	 This zone contains all the records of domain names to their IP addresses.
@@ -124,8 +124,8 @@ DNS Zones can be forward or reverse.
 	15      IN      PTR     testdomain.com.
 	15      IN      PTR     www.testdomain.com.
 	```
-	 - All is same as forward zone but in first column we specify last digit of ip address.
-	 - And instead of A record use PTR record (pointer)
+	 - All is same as forward zone, but in first column we specify last digit of ip address.
+	 - And instead of A record, use PTR record (pointer)
 
 
 
@@ -232,7 +232,7 @@ bohdan@test-dns:~$ sudo ufw allow Bind9                                         
 
 - (DNS VM) Edit Bind9 configuration file
 	- block "listen-on" specify requests from what ip addresses bind9 will listen.
-		- in my case DNS listens devices from local network.
+		- in my case, DNS listens devices from local network.
 	- block "forwarders" contain ip addresses of DNS servers to which the request will be redirected if bind9 doesn't know a required domain name.
 ```sh
 # /etc/bind/named.conf.options
@@ -495,7 +495,7 @@ Address: 2a00:1450:401b:805::200e
 ```
 
 - (Host VM) Change /etc/resolv.conf
-	- changes in this file will be overwrote after every reboot
+	- changes in this file will be overwritten after every reboot
 ```
 #/etc/resolv.conf
 ...
