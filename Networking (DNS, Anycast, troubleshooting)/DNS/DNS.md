@@ -52,6 +52,7 @@ DNS Zones can be forward or reverse.
         file "/etc/bind/zones/forward.testdomain.com";
 	};
 	```
+	- type "master" means that current machine is main for this zone
 	 ^4f9b7a
 
 	 - **Forward DNS Lookup zone configuration 
@@ -101,7 +102,8 @@ DNS Zones can be forward or reverse.
         file "/etc/bind/zones/reverse.testdomain.com";
 		};
 	```
-
+	- type "master" means that current machine is main for this zone
+	
 	 - **Reverse DNS lookup zone configuration ^8dd642
 	 ```
 	#/etc/bind/zones/reverse.testdomain.com
