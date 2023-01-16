@@ -1,5 +1,4 @@
 ***
-
 # What is DNS?
 
 Domain Name System collect domain names with their ip addresses.
