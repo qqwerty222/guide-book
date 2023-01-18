@@ -1,4 +1,3 @@
-***
 ## What is it? 
 
 **dig is a flexible tool that helps in process of DNS servers troubleshooting.
@@ -6,8 +5,8 @@
 It performs DNS lookups and displays the answers that are returned from the name server(s) that were queried.
 
 Unless it is told to query a specific name server, dig tries each of the servers listed in /etc/resolv.conf. If no usable server addresses are found, dig sends the query to the local host. When no command-line arguments or options are given, dig performs an NS query for "." (the root).
-***
 
+***
 ## Installation
 
 It is a part of dnsutils package, and you can install it using package manager.
@@ -16,11 +15,23 @@ Install on Ubuntu for example:
 ```
 sudo apt-get install dnsutils
 ```
----
 
+### Configuration
+- Windows 10
+- Oracle VM VirtualBox 7.0.4
+- NAT network
+	- DNS ip    - 10.0.2.6
+	- host ip   - 10.0.2.5
+- Ubuntu 22.04 Server as guest OS
+
+***
 ## Syntax
 
 ```
+dig [@global-server] [domain] [q-type] [q-class] {q-opt}
+            {global-d-opt} host [@local-server] {local-d-opt}
+            [ host [@local-server] {local-d-opt} [...]]
+
 dig [server] [name] [type]
 ```
 
@@ -77,8 +88,6 @@ google.com.             133     IN      A       142.250.203.206
 	- A - type of record, maps a domain name to ip address
 	- 142.250.203.206 - is ip address of the server.
 - SERVER: DNS server that answered on request. Default DNS server for current machine
-
-## Use cases
 
 - ### Get short answer
 ^ce2c24
