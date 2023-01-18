@@ -47,7 +47,7 @@ usage: ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface]
 ***
 ## Basic commands
 
-- [[#^1968c8|Connect to remote machine]]
+- Connect to remote machine
 
 
 - ###  Connect to remote machine ^1968c8
