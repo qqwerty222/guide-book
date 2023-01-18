@@ -29,7 +29,7 @@ bohdan@test-host:~$ sudo apt-get install mtr
 ***
 ## Basic commands
 
-- [[#^96e040|Ping route to hostname]]
+- Ping route to hostname]]
 
 - ###  Ping route to hostname ^96e040
 	- This program can be managed in real-time

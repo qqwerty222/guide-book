@@ -30,9 +30,9 @@ ping [options] <destination>
 ***
 ## Basic commands
 
-- [[#^d18198|Check connection to hostname]]
-- [[#^1484e1|Ping several times]]
-- [[#^57a302|Ping in broadcast mode]]
+- Check connection to hostname
+- Ping several times
+- Ping in broadcast mode
 
 - ###  Ping hostname ^d18198
 	- Each row of input include: 

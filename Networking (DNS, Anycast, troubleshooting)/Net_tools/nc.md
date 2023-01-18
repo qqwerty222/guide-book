@@ -41,10 +41,10 @@ usage: nc [-46CDdFhklNnrStUuvZz] [-I length] [-i interval] [-M ttl]
 ***
 ## Basic commands
 
-- [[nc#^c3742a|Set up tcp connection]]
-- [[#^04b110|Send file]]
-- [[#^8907c0|Execute commands]]
-- [[#^2998f8|Send your shell]]
+- Set up tcp connection
+- Send file
+- Execute commands
+- Send your shell
  
  - ### Set up tcp connection (chat) ^c3742a
 	 - "-l" means listen

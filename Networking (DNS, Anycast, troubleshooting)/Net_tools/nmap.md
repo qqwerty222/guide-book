@@ -28,8 +28,8 @@ nmap [Scan Type(s)] [Options] {target specification}
 ***
 ## Basic commands
 
-- [[#^b97030|Scan Subnet]]
-- [[#^a22c53|Scan host]]
+- Scan Subnet
+- Scan host
 
 - ###  Scan subnet  ^b97030
 ```

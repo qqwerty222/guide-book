@@ -44,13 +44,13 @@ dig [server] [name] [type]
 
 ## Basic commands
 
-- [[#^02c363|Get default info]]
-- [[#^ce2c24|Get short answer]]
-- [[dig#^85c251|Get main domains (MX Records)]]
-- [[#^9017ef|Get only answer section]]
-- [[#^bd7d74|Get all of the DNS records types]]
-- [[dig#^e3117e|Get trace path to the record]]
-- [[dig#^d0762d|Get domain by ip address (Reverse DNS Lookup)]]
+- Get default info
+- Get short answer
+- Get mail domains (MX Records)
+- Get only answer section
+- Get all of the DNS records types
+- Get trace path to the record
+- Get domain by ip address (Reverse DNS Lookup)
 
 ### Default info
 ^02c363

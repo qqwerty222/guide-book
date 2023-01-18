@@ -44,9 +44,9 @@ where  OBJECT := { address | addrlabel | fou | help | ila | ioam | l2tp | link |
 ***
 ## Basic commands
 
-- [[#^a12c02|Show available net interfaces]]
-- [[#^1dd654|Show current neighbour table]]
-- [[#^0cacf1|Show table routes]]
+- Show available net interfaces
+- Show current neighbour table
+- Show table routes
 
 - ###  Show available net interfaces ^a12c02
 	- 1: lo loopback interface, points on current machine

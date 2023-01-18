@@ -31,7 +31,9 @@ netstat {-V|--version|-h|--help}
 ***
 ## Basic commands
 
-- [[#^7273ad|Show currently opened on listening tcp/udp ports]]
+- Show currently opened on listening tcp/udp ports
+- Pull statistics about protocol
+- Show input/outputs by interface
 
 - ###  Show currently opened on listening tcp/udp ports ^7273ad
 	- -t tcp 
