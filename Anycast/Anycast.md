@@ -3,7 +3,7 @@
 
 Anycast is type of network routing where incoming requests can be routed to a multiple locations and in a multiple ways. By default using Anycast method incoming requests are routed to the neariest data center or data center that has more available resources to operate request.
 
-![[Anycast.png|600]]
+![Anycast](https://github.com/qqwerty222/obsidian/blob/main/Anycast/Anycast.png)
 
 ### Advantages:
 
@@ -24,7 +24,7 @@ Anycast is type of network routing where incoming requests can be routed to a mu
 
 It is a protocol that responsible for finding shortest and the most efficient route from start to destination point. BGP runs in the whole internet, and every route is combination of "hops" through different autonomous systems.
 
-![[BGP.png|600]]
+![BGP](https://github.com/qqwerty222/obsidian/blob/main/Anycast/BGP.png)
 
 ### Autonomous system (ASes)
 
