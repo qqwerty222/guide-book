@@ -17,6 +17,8 @@
 	- nginx ip - 10.0.2.15
 - Ubuntu 22.04 Server as guest OS
 
+***
+
 ## What we will do
 
 ### Part of what we will do
@@ -26,3 +28,5 @@
 ```
 bohdan@test-ngx:~$ sudo apt install nginx
 ```
+
+***
