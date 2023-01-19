@@ -35,7 +35,7 @@ Github is service that can store your github repositories in the internet and pr
 2) Set description if needed
 3) Pick "Private"
 4) Click "Create repository"
-![Create repo](https://github.com/qqwerty222/obsidian/blob/main/Gits/screenshots/Create_repo.png)
+![Create repo](https://github.com/qqwerty222/obsidian/blob/main/Git/screenshots/Create_repo.png)
 
 ## Generate ssh key
 
@@ -77,8 +77,9 @@ Identity added: /home/bohdan/.ssh/git (bohdan@test-host)
 4) Input password once again
 ![Add ssh2](https://github.com/qqwerty222/obsidian/blob/main/Git/screenshots/Add_ssh2.png)
 
-![ssh key](https://github.com/qqwerty222/obsidian/blob/main/Git/screenshots/ssh_key.png)
 You will see this on the "SSH and GPG keys" page
+![ssh key](https://github.com/qqwerty222/obsidian/blob/main/Git/screenshots/ssh_key.png)
+
 
 ## Clone github private repo and push .gitignore
 
