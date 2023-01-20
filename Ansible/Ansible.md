@@ -28,7 +28,7 @@ Infrastructure as a Code - method of managing infrastructure configuration using
 #### Open VirtualBox and go to Media settings 
 1) Extend "Tools" block
 2) Click on "Media"
-![Open Media](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/open_media.png)
+![Open media](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/open_media%20.png)
 
 ####  Choose type of Virtual Hard Disk
 1) Click on "Create" button
@@ -108,7 +108,7 @@ Infrastructure as a Code - method of managing infrastructure configuration using
 #### Start VM
 1) Click on your VM in the left bar
 2) Click "Start" button
-![Start VM](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/start_vm.png)
+![Start VM](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/start_vm%20.png)
 - Just follow installation instructions, pick "Install OpenSSS server"
 ### 
 
