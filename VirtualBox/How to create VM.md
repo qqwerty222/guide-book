@@ -21,7 +21,7 @@
 
 #### Choose disk space for OS
 1) Choose amount of space (25Gb is enough)
-2) Put check on "Pre-allocate Full Size", I am not going expand it.
+2) Put check on "Pre-allocate Full Size", I am not going to expand it.
 3) Click "Next"
 ![Choose Disk Space](https://github.com/qqwerty222/obsidian/blob/main/VirtualBox/screenshots/choose_space.png)
 
@@ -41,7 +41,7 @@
 ![Create Net](https://github.com/qqwerty222/obsidian/blob/main/VirtualBox/screenshots/create_net.png)
 
 #### Connect to NAT Network
-- Do this, if you want your VMs be in one network
+- Do this, if you want your VMs to be in one network
 1) Click on your VM
 2) Click "Settings"
 3) Click "Network"
@@ -55,7 +55,7 @@
 1) Click on your VM in the left bar
 2) Click "Start" button
 ![Start VM](https://github.com/qqwerty222/obsidian/blob/main/VirtualBox/screenshots/start_vm%20.png)
-- Just follow installation instructions, pick "Install OpenSSS server"
+- Just follow installation instructions, pick "Install OpenSSH server"
 
 #### Check ip address
 ![Check ip](https://github.com/qqwerty222/obsidian/blob/main/VirtualBox/screenshots/check_ipv4.png)
@@ -81,7 +81,7 @@
 #### Open cmd and connect
 - type "ssh -p2222 bohdan@localhost" 
 	- where -p is a port you selected in "Set up port forwarding ..." section
-	- bohdan@localhost is username choosed while OS installation in VM
+	- bohdan@localhost is username chosen while OS installation in VM
 	- after print "yes" and password you selected while OS installation in VM
 ```
 ssh -p2227 bohdan@localhost
@@ -91,7 +91,7 @@ ssh -p2227 bohdan@localhost
 
 - type "ssh bohdan@10.0.2.8"
 	- 10.0.2.8 is ip address of VM
-	- bohdan@localhost is username choosed while OS installation in VM
+	- bohdan@localhost is username chosen while OS installation in VM
 	- after print "yes" and password you selected while OS installation in VM
 ```
 bohdan@test-host:~$ ssh bohdan@10.0.2.8

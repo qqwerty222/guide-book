@@ -1,4 +1,3 @@
-
 ***
 ## Create and connect VHD
 
@@ -14,7 +13,7 @@
 ![Choose type](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/choose_disk.png)
 
 #### Set pre-allocated Full Size
-- means that size of your VHD will be fixed.
+- means that the size of your VHD will be fixed.
 1) Put check on "Pre-allocate Full Size"
 2) Click "Next"
 ![Choose type](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/check_size.png)
