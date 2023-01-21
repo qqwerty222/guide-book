@@ -1,16 +1,16 @@
 ***
 # What is?
 
-Git is a modern version control system. It provide functionality to store code repositories on different machines at the same time and synchronize changes in different ways when it is needed.
+Git is a modern version control system. It provides functionality to store code repositories on different machines at the same time and synchronize changes in different ways when it is needed.
 
 ***
-## What is github?:
+## What is GitHub?:
 
-Github is service that can store your github repositories in the internet and provide functionality to pull and push from them.
+GitHub is a service that can store your git repositories on the internet and provide functionality to pull and push from them.
 
 ---
 
-# Create private github repo and .gitignore
+# Create private GitHub repo and .gitignore
 
 ## Configuration
 - Windows 10
@@ -21,9 +21,9 @@ Github is service that can store your github repositories in the internet and pr
 
 ***
 
-## Create private github repo
+## Create private GitHub repo
 
-#### Register or log in to github account 
+#### Register or log in to GitHub account 
 - https://github.com
 ![Log in](https://github.com/qqwerty222/obsidian/blob/main/Git/screenshots/Log_in.png)
 
@@ -61,7 +61,7 @@ Enter passphrase for /home/bohdan/.ssh/git:
 Identity added: /home/bohdan/.ssh/git (bohdan@test-host)
 ```
 
-## Add ssh key to github account
+## Add ssh key to GitHub account
 
 #### Open SSH and GPG keys settings
 - Click on user icon
@@ -81,7 +81,7 @@ You will see this on the "SSH and GPG keys" page
 ![ssh key](https://github.com/qqwerty222/obsidian/blob/main/Git/screenshots/ssh_key.png)
 
 
-## Clone github private repo and push .gitignore
+## Clone GitHub private repo and push .gitignore
 
 #### Clone repository
 ```
