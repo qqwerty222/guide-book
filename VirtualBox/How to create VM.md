@@ -71,10 +71,10 @@
 3) Select your Nat Network
 4) Click "Properties"
 5) Click "Add" and fill 
-- protocol "TCP" 
-- Host Port any you want (2225 doesn't work)
-- Guest IP is ip of your target VM
-- Guest Port 22, default ssh port
+	- protocol "TCP" 
+	- Host Port any you want (2225 doesn't work)
+	- Guest IP is ip of your target VM
+	- Guest Port 22, default ssh port
 6) Click "Apply"
 ![Add port](https://github.com/qqwerty222/obsidian/blob/main/VirtualBox/screenshots/add_port.png)
 
