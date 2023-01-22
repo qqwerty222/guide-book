@@ -6,7 +6,7 @@ Anycast is a type of network routing where incoming requests can be routed to mu
 Anycast works because of BGP (routing protocol) that can search and cache the shortest way to ip address.
 When we create multiple clients with the same ip, BGP doesn't know that it is different machines, BGP just route packets to nearest one. 
 
-![Anycast](https://github.com/qqwerty222/obsidian/blob/main/Anycast/Anycast.png)
+![Anycast](https://github.com/qqwerty222/obsidian/blob/main/Networking_DNS_Anycast_troubleshooting/Anycast/Anycast.png)
 
 ### Advantages:
 
@@ -27,7 +27,7 @@ When we create multiple clients with the same ip, BGP doesn't know that it is di
 
 It is a protocol that responsible for finding the shortest and the most efficient route from start to destination point. BGP runs in the whole internet, and every route is a combination of "hops" through different autonomous systems.
 
-![BGP](https://github.com/qqwerty222/obsidian/blob/main/Anycast/BGP.png)
+![BGP](https://github.com/qqwerty222/obsidian/blob/main/Networking_DNS_Anycast_troubleshooting/Anycast/BGP.png)
 
 ### Autonomous system (ASes)
 
