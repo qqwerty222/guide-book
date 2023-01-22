@@ -53,7 +53,7 @@ bohdan@testhdd:~$ sudo init 1
 ```
 
 #### Check connected disks
-- * special symbol that can be replaced by any char while OS searching for files
+- \* special symbol that can be replaced by any char while OS searching for files
 - main disk is divided on 3 partitions (sda, sda1, sda2, sda3)
 - new disk is /dev/sdb
 ```
@@ -138,13 +138,6 @@ Writing inode tables: done
 Creating journal (16384 blocks): done
 Writing superblocks and filesystem accounting information: done
 ```
-
-#### Create rescue.target
-```
-bohdan@testhdd:~$ sudo systemctl set-default rescue.target
-Created symlink /etc/systemd/system/default.target → /lib/systemd/system/rescue.target.
-```
-
 #### Mount new volume to temporary location
 ```
 bohdan@testhdd:~$ sudo mkdir /mnt/tmp_vol
@@ -168,6 +161,7 @@ bohdan@testhdd:~$ sudo umount /mnt/tmp_vol
 
 #### Edit /etc/fstab and reload configuration 
 - /etc/fstab is file-instruction for Linux to disk mounting
+- "mount -a" reload fstab file
 ```
 /etc/fstab
 ...
@@ -181,7 +175,7 @@ auth.log          cloud-init-output.log  dmesg.1.gz  dpkg.log    kern.log   priv
 bootstrap.log     dist-upgrade           dmesg.2.gz  faillog     landscape  syslog
 ```
 
-#### Reload fstab file
+
 ***
 ## Install ansible on control node (host)
 
@@ -271,5 +265,5 @@ bohdan@test-host:~/ansible-project$ touch group_vars/test_hdd
 4) Click "Add VHD" button
 5) Select VHD and click "Choose"
 6) Click "Ok"
-![Add VHD](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/Add_VHD.png)
+![Add VHD](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/connect_vhd.png)
 
