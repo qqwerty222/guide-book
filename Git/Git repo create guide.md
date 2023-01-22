@@ -64,10 +64,10 @@ Identity added: /home/bohdan/.ssh/git (bohdan@test-host)
 ## Add ssh key to GitHub account
 
 #### Open SSH and GPG keys settings
-- Click on user icon
-- Click "Settings"
-- Click "SSH and GPG keys"
-- Click "New SSH key"
+1) Click on user icon
+2) Click "Settings"
+3) Click "SSH and GPG keys"
+4) Click "New SSH key"
 ![Add ssh](https://github.com/qqwerty222/obsidian/blob/main/Git/screenshots/Add_ssh.png)
 
 #### Add ssh public key generated in previous block
