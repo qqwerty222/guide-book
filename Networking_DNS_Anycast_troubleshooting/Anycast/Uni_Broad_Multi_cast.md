@@ -4,7 +4,7 @@
 
 Unicast is a technology of data transferring. Transmission between no more than 2 machines, one single sender and one single receiver.
 
-![Unicast](https://github.com/qqwerty222/obsidian/blob/main/Anycast/Unicast.png)
+![Unicast](https://github.com/qqwerty222/obsidian/blob/main/Networking_DNS_Anycast_troubleshooting/Anycast/Unicast.png)
 
 As you can see on the diagram above, all the machines connected to router 1. But it forwards data from Host only to Nginx because Host sent it to Nginx.
 
@@ -21,7 +21,7 @@ PING 10.0.2.15 (10.0.2.15) 56(84) bytes of data.
 
 Broadcast is a technology of data transferring. Transmission between one machine and anyone in the network. There is one single sender and all the machines in the network are receivers.
 
-![Broadcast](https://github.com/qqwerty222/obsidian/blob/main/Anycast/Broadcast.png)
+![Broadcast](https://github.com/qqwerty222/obsidian/blob/main/Networking_DNS_Anycast_troubleshooting/Anycast/Broadcast.png)
 
 As you can see on diagram, all the machines connected to router 1. And it forwards data from Host to everyone in the network, even Host because it also in this network.
 
@@ -58,7 +58,7 @@ As you can see I got output from 3 machines, Host(my current machine), DNS and N
 
 Multicast is a technology of data transferring. Transmission between one machine and anyone in the network. There is a one single sender and some of the machines in the network are receivers.
 
-![Multicast](https://github.com/qqwerty222/obsidian/blob/main/Anycast/Multicast.png)
+![Multicast](https://github.com/qqwerty222/obsidian/blob/main/Networking_DNS_Anycast_troubleshooting/Anycast/Multicast.png)
 
 As you can see on the diagram, all the machines connected to router 1. And it forwards data from Host to Nginx and DNS only, because Host sent data only to them.
 
