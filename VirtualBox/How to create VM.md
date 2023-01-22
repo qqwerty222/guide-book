@@ -27,7 +27,7 @@
 
 #### Finish VM creation
 1) Click "Finish"
-![Choose Disk Space](https://github.com/qqwerty222/obsidian/blob/main/VirtualBox/screenshots/choose_space.png)
+![Choose Disk Space](https://github.com/qqwerty222/obsidian/blob/main/VirtualBox/screenshots/finish_installation.png)
 
 ***
 ## Create Nat Network and start VM
