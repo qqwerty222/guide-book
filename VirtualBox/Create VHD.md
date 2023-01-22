@@ -34,6 +34,6 @@
 4) Click "Add VHD" button
 5) Select VHD and click "Choose"
 6) Click "Ok"
-![Add VHD](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/Add_VHD.png)
+![Add VHD](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/connect_vhd.png)
 
 ***
