@@ -40,6 +40,51 @@ Infrastructure as a Code - method of managing infrastructure configuration using
 - Ansible (python package) 7.1.0
 
 ***
+
+- Create and connect VHD
+- Perform task manually
+- Install ansible on control node
+- Prepare ansible project dir
+
+***
+## Create and connect VHD
+
+#### Open VirtualBox and go to Media settings 
+1) Extend "Tools" block
+2) Click on "Media"
+![Open media](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/open_media%20.png)
+
+####  Choose type of Virtual Hard Disk
+1) Click on "Create" button
+2) Select "VHD (Virtual Hard Disk)"
+3) Click "Next"
+![Choose type](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/choose_disk.png)
+
+#### Set pre-allocated Full Size
+- means that size of your VHD will be fixed.
+1) Put check on "Pre-allocate Full Size"
+2) Click "Next"
+![Choose type](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/check_size.png)
+
+#### Choose size of the disk
+1) Put name for your disk if needed
+2) Set size for your disk
+3) Click "Finish"
+![Choose size](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/choose_size.png)
+
+#### Check creation of the VHD
+![Check disk](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/finish.png)
+
+#### Connect VHD to VM
+1) Select your VM in the left bar
+2) Click "Settings"
+3) Click "Storage"
+4) Click "Add VHD" button
+5) Select VHD and click "Choose"
+6) Click "Ok"
+![Add VHD](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/connect_vhd.png)
+
+***
 ## Perform task manually
 
 #### Login as root
@@ -210,9 +255,41 @@ bohdan@test-host:~$ python3 -m pip install --user ansible
 ```
 
 ***
-## Create ansible project dir
+## Prepare ansible project dir
 
-It is a directory where i will store configuration files and playbooks.
+It is a directory where playbooks and config files are stored.
+
+Final directory tree
+- ansible.cfg is file where links to inventory and ansible-vault password file is stored
+	- hosts is file where groups of ip or dns addresses of target machines is stored
+	- group_vars/servers/.vault is where password for secrets file stored
+
+- chdsk.yml main ansible playbook that activates roles
+	- roles is directory where playbooks for groups of target machines is stored
+	- test-hdd is dir of role ...
+
+- group_vars is directory that stores secrets and variables for different groups.
+	- group_vars/servers/secrets is file for servers group secrets.
+
+- .gitignore stores files that will be ignored by git.
+	- group_vars/.vault in .gitignore file
+```
+├── ansible.cfg
+├── chdsk.yml
+├── .git
+├── .gitignore
+├── group_vars
+│   ├── servers
+│   │   └── secrets
+│   └── .vault
+├── hosts
+└── roles
+    └── test-hdd
+        ├── handlers
+        │   └── main.yml
+        └── tasks
+            └── main.yml
+```
 
 #### Clone empty repository created for ansible project
 ```
@@ -220,50 +297,146 @@ bohdan@test-host:~$ git clone https://github.com/qqwerty222/ansible-project.git
 bohdan@test-host:~$ cd ansible-project
 ```
 
+#### Create hosts file and ansible.cfg
+```
+bohdan@test-host:~/ansible-project$ cat > hosts
+[servers]
+10.0.2.8
+bohdan@test-host:~/ansible-project$ cat > ansible.cfg
+[defaults]
+inventory = ./hosts
+vault_password_file = ./group_vars/.vault
+```
+
+#### Create chdsk.yml
+```
+bohdan@test-host:~/ansible-project$ cat > chdsk.yml
+---
+
+- name: prepare disk and mount it to /var/log dir
+  hosts: servers
+  remote_user: bohdan
+
+  roles:
+    - test-hdd
+```
+
 #### Create "group_vars" and "roles" dirs
 ```
 bohdan@test-host:~/ansible-project$ mkdir group_vars roles
-bohdan@test-host:~/ansible-project$ ls
-group_vars  roles
 bohdan@test-host:~/ansible-project$ mkdir roles/test_hdd
-bohdan@test-host:~/ansible-project$ touch group_vars/test_hdd
+bohdan@test-host:~/ansible-project$ mkdir roles/test-hdd/handlers
+bohdan@test-host:~/ansible-project$ mkdir roles/test-hdd/tasks
+bohdan@test-host:~/ansible-project$ mkdir group_vars/servers
+```
+
+#### Create secrets file for test-hdd, using ansible-vault
+- ansible-vault encrypt file, after you can view or edit this file only using ansible
+	- ansible-vault edit ...
+	- ansible-vault view ...
+```
+bohd@test-host:~/ansible-project$ ansible-vault create group_vars/servers/secrets
+
+ansible_user: bohdan
+ansible_password: "userpass"
+ansible_become_password: "userpass"
+
+bohdan@test-host:~/ansible-project$ cat group_vars/servers/secrets
+$ANSIBLE_VAULT;1.1;AES256
+66666161613964643966343633613939313136313339353532336334386363376431306564616136
+3635396662313534636334636330633030656233643863370a616139646231383931656462303666
+...
+bohdan@test-host:~/ansible-project$ cat > group_vars/servers/.vault
+vaultpass
 ```
 
 ***
-## Create and connect VHD
+## Create playbook
 
-#### Open VirtualBox and go to Media settings 
-1) Extend "Tools" block
-2) Click on "Media"
-![Open media](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/open_media%20.png)
+#### Create tasks file
+```
+# roles/test_hdd/tasks/main.yml
 
-####  Choose type of Virtual Hard Disk
-1) Click on "Create" button
-2) Select "VHD (Virtual Hard Disk)"
-3) Click "Next"
-![Choose type](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/choose_disk.png)
+---
+- name: Create partition
+  parted:
+    device: /dev/sdb
+    number: 1
+    flags: [ lvm ]
+    state: present
+    part_end: 5GB
 
-#### Set pre-allocated Full Size
-- means that size of your VHD will be fixed.
-1) Put check on "Pre-allocate Full Size"
-2) Click "Next"
-![Choose type](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/check_size.png)
+- name: Create volume group
+  lvg:
+    vg: vg01
+    pvs: /dev/sdb1
 
-#### Choose size of the disk
-1) Put name for your disk if needed
-2) Set size for your disk
-3) Click "Finish"
-![Choose size](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/choose_size.png)
+- name: Create logical group
+  lvol:
+    vg: vg01
+    lv: lv01
+    size: 4096m
 
-#### Check creation of the VHD
-![Check disk](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/finish.png)
+- name: Create directory /mnt/tmp_vol
+  file:
+    path: /mnt/tmp_vol
+    state: directory
 
-#### Connect VHD to VM
-1) Select your VM in the left bar
-2) Click "Settings"
-3) Click "Storage"
-4) Click "Add VHD" button
-5) Select VHD and click "Choose"
-6) Click "Ok"
-![Add VHD](https://github.com/qqwerty222/obsidian/blob/main/Ansible/screenshots/connect_vhd.png)
+- name: Format into ext4
+  filesystem:
+    fstype: ext4
+    dev: /dev/vg01/lv01
 
+- name: Mount lv to /mnt/temp_vol
+  mount:
+    path: /mnt/temp_vol
+    src: /dev/vg01/lv01
+    fstype: ext4
+    state: mounted
+
+- name: Set single.user mode
+  command: init 1
+
+- name: Copy /var/log to /mnt/temp_vol
+  copy:
+    src: /var/log
+    dest: /mnt/temp_vol/
+    backup: yes
+    remote_src: yes
+
+- name: Remove original /var/log
+  file:
+    path: /var/log
+    state: absent
+
+- name: Create empty /var/log as mount point
+  file:
+    path: /var/log
+    state: directory
+
+- name: Unmount /mnt/temp_vol
+  mount:
+    path: /mnt/temp_vol
+    state: unmounted
+
+- name: Edit /etc/fstab
+  lineinfile:
+    dest: /etc/fstab
+    line: /dev/vg01/lv01 /var/log ext4 defaults 0 0
+
+- name: Reload fstab
+  command: mount -a
+
+- name: Change to multi.user mode
+  command: init 3
+  notify: Restart machine
+```
+
+#### Create handlers file
+```
+# roles/test-hdd/handlers/main.yml
+
+---
+- name: Restart machine
+  reboot:
+```
