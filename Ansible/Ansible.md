@@ -45,6 +45,8 @@ Infrastructure as a Code - method of managing infrastructure configuration using
 - Perform task manually
 - Install ansible on control node
 - Prepare ansible project dir
+- Create playbook
+- Test playbook
 
 ***
 ## Create and connect VHD
@@ -351,16 +353,16 @@ vaultpass
 ```
 
 ***
-## Create playbook
+## Create tasks for playbook
 
-#### Create tasks file
+#### First part of playbook to create Logical Volume on new disk
 ```
 # roles/test_hdd/tasks/main.yml
 
 ---
 - name: Create partition
   parted:
-    device: /dev/sdb
+    device: '/dev/{{ dev_name }}'
     number: 1
     flags: [ lvm ]
     state: present
@@ -369,7 +371,7 @@ vaultpass
 - name: Create volume group
   lvg:
     vg: vg01
-    pvs: /dev/sdb1
+    pvs: '/dev/{{ dev_name }}1'
 
 - name: Create logical group
   lvol:
@@ -377,15 +379,18 @@ vaultpass
     lv: lv01
     size: 4096m
 
-- name: Create directory /mnt/tmp_vol
-  file:
-    path: /mnt/tmp_vol
-    state: directory
-
 - name: Format into ext4
   filesystem:
     fstype: ext4
     dev: /dev/vg01/lv01
+```
+
+#### Second part to mount new LV to temporary dir
+```
+- name: Create temporary volume
+  file:
+    path: /mnt/temp_vol
+    state: directory
 
 - name: Mount lv to /mnt/temp_vol
   mount:
@@ -393,25 +398,25 @@ vaultpass
     src: /dev/vg01/lv01
     fstype: ext4
     state: mounted
+```
 
-- name: Set single.user mode
-  command: init 1
-
-- name: Copy /var/log to /mnt/temp_vol
+#### Third part of the playbook to replace /var/log
+```
+- name: 'Copy {{ source_dir }} to /mnt/temp_vol'
   copy:
-    src: /var/log
+    src: '{{ source_dir }}/'
     dest: /mnt/temp_vol/
     backup: yes
     remote_src: yes
 
-- name: Remove original /var/log
+- name: Remove original '{{ source_dir }}'
   file:
-    path: /var/log
+    path: '{{ source_dir }}'
     state: absent
 
-- name: Create empty /var/log as mount point
+- name: Create empty '{{ source_dir }}' as mount point
   file:
-    path: /var/log
+    path: '{{ source_dir }}'
     state: directory
 
 - name: Unmount /mnt/temp_vol
@@ -422,21 +427,151 @@ vaultpass
 - name: Edit /etc/fstab
   lineinfile:
     dest: /etc/fstab
-    line: /dev/vg01/lv01 /var/log ext4 defaults 0 0
+    line: '/dev/vg01/lv01 {{ source_dir }} ext4 defaults 0 0'
 
 - name: Reload fstab
   command: mount -a
 
 - name: Change to multi.user mode
   command: init 3
-  notify: Restart machine
 ```
+
+To check is all ok with /var/log directory, use debug module.
+And to make tasks file more clear, separate debug module into handlers files.
 
 #### Create handlers file
+- all tasks will be triggered by 'notify: show log'
+- firstly execute 'date' 'df' and 'tail syslog' commands and save output into variables
+- after print these variables using 'debug' module.
+- add 'listen' to make same trigger for all the commands.
 ```
 # roles/test-hdd/handlers/main.yml
-
 ---
+- name: Check current time
+  command: date +%X
+  register: current_time
+  listen: 'show log'
+
+- name: Check current mount
+  command: 'df {{ source_dir }}'
+  register: current_mount
+  listen: 'show log'
+
+- name: Check /var/log/syslog
+  command: tail /var/log/syslog
+  register: last_syslog
+  listen: 'show log'
+
+- name: Show current time and mount
+  debug:
+    msg:
+    - 'Start time: {{ current_time.stdout_lines}}'
+    - 'Current mount to {{ source_dir }}:'
+    - '{{ current_mount.stdout_lines }}'
+    - 'Last 10 logs from /var/log/syslog:'
+    - '{{ last_syslog.stdout_lines }}'
+  listen: 'show log'
+```
+
+#### Add handlers notifiers into tasks
+- to get logs before changes and after, add notify statements on the start and end of the file
+- use 'meta' module to make notifiers permanent. (by default they trigger only on changes)
+```
+# roles/test-hdd/tasks/main.yml
+---
+- name: Set single.user mode
+  command: init 1
+  notify: "show log"
+
+- name: Show start log
+  meta: flush_handlers
+
+...
+
 - name: Restart machine
   reboot:
+  notify: "show log"
+
+- name: Show finish log
+  meta: flush_handlers
+
 ```
+
+#### Add variables to main playbook file
+- to make playbook more flexible, make source dir and hdd device name variable.
+```
+chdsk.yml
+---
+- name: Prepare new disk and remount some dir to it
+  hosts: servers
+  remote_user: bohdan
+  become: true
+  vars:
+    dev_name: sdb
+    source_dir: /var/log
+  roles:
+    - test-hdd
+```
+
+***
+## Test playbook
+
+- Start ansible playbook
+```
+bohdan@test-host:~/ansible-project$ ansible-playbook chdsk.yml
+
+PLAY [Prepare new disk and remount some dir to it] *****************************
+
+TASK [Gathering Facts] ********************************************************************************
+ok: [10.0.2.8]
+...
+TASK [test-hdd : Create partition] *********************************************************************************changed: [10.0.2.8]
+
+TASK [test-hdd : Create volume group] *********************************************************************************changed: [10.0.2.8]
+...
+```
+
+- Start log
+```
+RUNNING HANDLER [test-hdd : Show current time and mount] ***********************
+ok: [10.0.2.8] => {
+    "msg": [
+        "Start time: ['02:01:07 PM']",
+        "Current mount to /var/log:",
+        [
+            "Filesystem            1K-blocks  Used    Available Use% Mounted on",
+            "/dev/./vg-ubuntu--lv  11758760   4932448 6207204   45%  /"
+        ],
+        "Last 10 logs from /var/log/syslog:",
+        [
+            "Jan 24 14:01:06 testhdd systemd[1]: Stopping Getty on tty1...",
+            "Jan 24 14:01:06 testhdd ModemManager[757]: ModemManager is ...,
+            "Jan 24 14:01:06 testhdd systemd[1]: Stopping LVM event ...",
+            ...
+        ]
+    ]
+}
+```
+
+- Finish log
+```
+RUNNING HANDLER [test-hdd : Show current time and mount] ***********************
+ok: [10.0.2.8] => {
+    "msg": [
+        "Start time: ['02:02:10 PM']",
+        "Current mount to /var/log:",
+        [
+            "Filesystem            1K-blocks  Used Available Use% Mounted on",
+            "/dev/mapper/vg01-lv01   4046560 77308   3743156   3% /var/log"
+        ],
+        [
+        [
+            "Jan 24 14:02:09 testhdd systemd[1]: snapd.service: Deactivated ...
+            "Jan 24 14:02:09 testhdd systemd[1]: snapd.service: Consumed ...
+            "Jan 24 14:02:10 testhdd python3[1217]: ansible-ansible.legacy ...
+        ]
+    ]
+}			
+```
+
+As you can see from df output in finish log /var/log mounted to vg01-lv01 it is lvm created by this playbook. Also on the output from syslog you can see that new logs was written after restart into /var/log.
