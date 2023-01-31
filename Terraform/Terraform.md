@@ -12,43 +12,6 @@ Also Terraform supported by a lot of Cloud Providers and infrastructure platfrom
 - Windows 10
 - (WSL) Ubuntu server 22.04
 
-## Install Terraform
-
-#### Install gnupg, gpg and software-properties-common
-- This packages will be used to verify signatures of packages
-	- must Hashicorp it is an owner of Terraform software
-```
-╭─bohdan@PF2FXPPG ~
-╰─$ sudo apt-get install gpg gnupg software-properties-common
-```
-
-#### Download the signing key
-```
-╭─bohdan@PF2FXPPG ~
-╰─$ wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-```
-
-#### Verify signature
-```
-╭─bohdan@PF2FXPPG ~
-╰─$ gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
-```
-
-#### Add HashiCorp repo
-```
-╭─bohdan@PF2FXPPG ~
-╰─$ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-```
-
-#### Install Terraform
-```
-╭─bohdan@PF2FXPPG ~
-╰─$ sudo apt update
-...
-╭─bohdan@PF2FXPPG ~
-╰─$ sudo apt install terraform
-```
-
 ***
 ## Create terraform file
 
@@ -57,7 +20,7 @@ Also Terraform supported by a lot of Cloud Providers and infrastructure platfrom
 	- source attribute defines an optional hostname, namespace and the provider type.
 		- you can find available providers there [Terraform Registry](https://registry.terraform.io/)
 	- also you can specify specific version.
-```
+```hcl
 terraform {
 	required_providers {
 		docker = {
@@ -70,7 +33,7 @@ terraform {
 
 #### Define provider { } 
 - This block set Terraform plugin that will be used to interact with provider
-```
+```hcl
 provider "docker" {}
 ```
 
@@ -79,7 +42,7 @@ provider "docker" {}
 	- On the first row you see resource type (docker_image) and resource name (nginx)
 	- Next arguments you use to configure the resource it can be machine size, disk image, ports...
 	- 
-```
+```hcl
 resource "docker_image" "nginx" {
 	name 		 = "nginx:latest"
 	keep_locally = false
@@ -96,7 +59,7 @@ resource "docker_container" "nginx" {
 ```
 
 #### Final file
-```
+```hcl
 terraform {
 	required_providers {
 		docker = {
@@ -127,7 +90,7 @@ resource "docker_container" "nginx" {
 ## Initialize terraform file
 
 #### Load configuration from file 
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ ls
 main.tf  
@@ -143,7 +106,7 @@ Initializing provider plugins...
 
 #### Check changes
 - There you can see services that will be started 
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform plan
 
@@ -170,7 +133,7 @@ Terraform will perform the following actions:
 ```
 
 #### Deploy configuration
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform apply
 ...
@@ -178,7 +141,7 @@ Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 ```
 
 #### Destroy configuration
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform destroy
 ...
@@ -191,8 +154,8 @@ Destroy complete! Resources: 2 destroyed.
 #### Show current configuration
 To store confiration Terraform uses file with .tfstate extension. So it must be saved in secure.
 Also to get current configuration you can use next command
-```
----------------------------------------------------------------------------------╭─bohdan@PF2FXPPG ~/docker/terraform
+```hcl
+╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform show
 # docker_container.nginx:
 resource "docker_container" "nginx" {
@@ -211,7 +174,7 @@ resource "docker_container" "nginx" {
 
 #### Manage terraform state
 
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform state
 ...
@@ -225,14 +188,14 @@ Subcommands:
     show                Show a resource in the state
 ```
 
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform state list                                                                
 docker_container.nginx
 docker_image.nginx
 ```
 
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform state show docker_container.nginx
 # docker_container.nginx:
@@ -253,13 +216,13 @@ resource "docker_container" "nginx" {
 ## Variables in terraform files 
 
 ####  Create file .tf file
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ touch variables.tf
 ```
 
 #### Define variable
-```
+```hcl
 variable "internal_port" {
 		description = "Number of port will opened internal"
 		type 		= string
@@ -268,7 +231,7 @@ variable "internal_port" {
 ```
 
 #### Use variable in main terraform file
-```
+```hcl
 ...
 	ports {
 		internal = var.internal_port 
@@ -278,7 +241,7 @@ variable "internal_port" {
 ```
 
 #### Apply changes in configuration
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform apply
 ...
@@ -295,13 +258,13 @@ variable "internal_port" {
 Outputs is variables that can store data from provider api
 
 #### Create file for outputs
-```
+```sh
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ touch outputs.tf
 ```
 
 #### Define outputs
-```
+```hcl
 output "container_id" {
 	description = "ID of the Docker container"
 	value 		= docker_container.nginx.id
@@ -314,7 +277,7 @@ output "image_id" {
 ```
 
 #### Apply changes and show outputs
-```
+```hcl
 ╭─bohdan@PF2FXPPG ~/docker/terraform
 ╰─$ terraform apply
 ...
