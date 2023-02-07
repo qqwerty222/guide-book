@@ -34,3 +34,13 @@
 ╭─bohdan@PF2FXPPG ~
 ╰─$ sudo apt install terraform
 ```
+
+## After install connect with credentials from aws cli this way
+```
+provider "aws" {
+  shared_config_files       = ["/home/user/.aws/config"]
+  shared_credentials_files  = ["/home/user/.aws/credentials"]
+
+  region = "eu-central-1"
+}
+```
