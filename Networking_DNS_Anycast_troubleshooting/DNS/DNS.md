@@ -5,7 +5,7 @@ Domain Name System collect domain names with their ip addresses.
 
 When you are trying to reach a website using a domain name, your computer asks DNS what ip address this domain has, and after reach the website using ip address of the domain.
 
-![[DNS.png|400]]
+![DNS](https://github.com/qqwerty222/obsidian/blob/main/Networking_DNS_Anycast_troubleshooting/DNS/DNS.png)
 
 ---
 ## DNS records:
