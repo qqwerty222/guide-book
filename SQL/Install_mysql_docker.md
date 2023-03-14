@@ -11,13 +11,10 @@ MySQL is an open-source relational database management system. Based on SQL (Str
 - Create new admin account for database
 ---
 
-### Run MySQL container
-
-Don't forget to map port 3306, you will use it to connect from mysql client
-    
+### Run MySQL container  
 ```bash
 ╭─bohdan@PF2FXPPG ~
-╰─$ docker run --name mysql-1 -e MYSQL_ROOT_PASSWORD=password -d -p3306:3306 mysql:latest
+╰─$ docker run --name mysql -e MYSQL_ROOT_PASSWORD=password -d mysql:latest
 ```
 
 ---
@@ -33,10 +30,10 @@ Allow you to start your own server, or connect to another mysql servers
 ---
 ### Connect to mysql DB
 
-At first get ip address of docker container
+Get ip address of docker container
 ```bash
 ╭─bohdan@PF2FXPPG ~
-╰─$ docker inspect mysql-1 | grep "IPAddress"
+╰─$ docker inspect mysql | grep "IPAddress"
             "IPAddress": "172.17.0.2",
                     "IPAddress": "172.17.0.2",
 ```

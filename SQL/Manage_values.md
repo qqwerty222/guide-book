@@ -157,7 +157,7 @@ mysql> SELECT * FROM users WHERE NOT Country='Germany' AND NOT Country='USA';
 +------------+-----------+--------+---------+
 ```
 
---
+---
 ## ORDER
 
 ### Ascending ORDER

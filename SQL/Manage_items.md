@@ -1,12 +1,28 @@
 ## Plan
 
+- [Plan](#plan)
 - [Databases](#databases)
+  - [Create database](#create-database)
+  - [Delete database](#delete-database)
 - [Tables](#tables)
-- [Constraints](#constraints-data-type-rules)
+  - [Create table](#create-table)
+  - [Delete table](#delete-table)
+  - [Delete data from the table](#delete-data-from-the-table)
+  - [Add column to existing table](#add-column-to-existing-table)
+  - [Delete column from existing table](#delete-column-from-existing-table)
+  - [Modify column in existing table](#modify-column-in-existing-table)
+- [Constraints](#constraints)
+  - [NOT NULL / UNIQUE](#not-null--unique)
+  - [PRIMARY KEY / FOREIGN KEY](#primary-key--foreign-key)
+  - [CHECK](#check)
+  - [DEFAULT](#default)
+  - [CREATE INDEX (allow db work faster)](#create-index-allow-db-work-faster)
 - [Special Fields](#special-fields)
+  - [AUTO\_INCREMENT](#auto_increment)
 
 ---
 ## Databases
+
 ### Create database
 ```sql
 mysql> CREATE DATABASE test1;
